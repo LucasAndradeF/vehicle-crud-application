@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Veículo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+
+  <body class="container-content">
+    <section class="section section-bcg">
+      <h1 class="title">Cadastrar Novo Veículo</h1>
+      <form id="form-veiculo">
+        <label for="marca" class="label">Marca</label>
+        <input
+          type="text"
+          name="marca"
+          class="input form-input"
+          id="marca"
+          required
+        />
+        <label for="modelo" class="label">Modelo</label>
+        <input type="text" class="input form-input" id="modelo" required />
+        <label for="ano" class="label">Ano</label>
+        <input type="number" class="input form-input" id="ano" required />
+        <label for="preco" class="label">Preço</label>
+        <input type="number" class="input form-input" id="preco" required />
+        <div class="is-flex is-justify-content-space-between">
+          <button type="submit" class="button is-primary">Enviar</button>
+          <a href="dashboard.html" class="has-text-right button is-link"
+            >Menu anterior</a
+          >
+        </div>
+      </form>
+    </section>
+    <script src="../js/scriptl.js"></script>
+  </body>
+</html>

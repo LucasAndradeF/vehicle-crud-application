@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Gestão de Veículos</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+
+  <body class="container-content">
+    <section class="section section-bcg">
+      <h1 class="title">Gestão de Veículos</h1>
+      <div class="container-button is-flex is-flex-direction-column">
+        <button
+          class="button is-primary button-cta"
+          onclick="window.location.href='lista-veiculos.html'"
+        >
+          Listar Veículos
+        </button>
+        <button
+          class="button is-primary button-cta"
+          onclick="window.location.href='dados-veiculos.html'"
+        >
+          Cadastrar Veículos
+        </button>
+        <button
+          class="button is-primary button-cta"
+          onclick="window.location.href='buscar-veiculo.html'"
+        >
+          Buscar Veículo por ID
+        </button>
+        <button
+          class="button is-link button-cta"
+          onclick="window.location.href='http://127.0.0.1:5000/apidocs/'"
+        >
+          APIDocs
+        </button>
+      </div>
+    </section>
+  </body>
+</html>
