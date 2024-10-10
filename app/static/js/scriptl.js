@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const id = getQueryParam("id");
   const formAlterar = document.getElementById("form-alterar");
   const formBusca = document.getElementById("form-busca");
+  const formVeiculo = document.getElementById("form-veiculo");
 
   // Verificar se o ID está presente na URL
   if (id) {
@@ -85,50 +86,98 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = `dados-veiculos.html?id=${id}`;
     });
   }
-});
 
-// Função para listar veículos na tabela
-function listarVeiculos() {
-  fetch("http://127.0.0.1:5000/veiculos")
-    .then((response) => {
-      console.log("Resposta da API:", response); // Exibe a resposta completa no console
-      return response.json();
-    })
-    .then((veiculos) => {
-      // Seleciona o tbody da tabela onde os dados serão inseridos
-      const listarVeiculos = document.querySelector("#tabela-veiculos");
-      if (!listarVeiculos) return;
-      // Limpa o tbody antes de adicionar novos dados (opcional)
-      listarVeiculos.innerHTML = "";
+  // Verificar se o formulário de adição de veículo existe
+  if (formVeiculo) {
+    formVeiculo.addEventListener("submit", async (event) => {
+      event.preventDefault(); // Impede o envio padrão do formulário
 
-      veiculos.forEach((veiculo) => {
-        // Cria uma nova linha para cada veículo
-        const itemVeiculos = document.createElement("tr");
+      // Obter os valores dos campos do formulário
+      const marca = document.getElementById("marca").value;
+      const modelo = document.getElementById("modelo").value;
+      const ano = document.getElementById("ano").value;
+      const preco = document.getElementById("preco").value;
 
-        // Cria células para cada propriedade do veículo
-        itemVeiculos.innerHTML = `
-                  <td>${veiculo.id}</td>
-                  <td>${veiculo.marca}</td>
-                  <td>${veiculo.modelo}</td>
-                  <td>${veiculo.ano}</td>
-                  <td>R$ ${veiculo.preco.toFixed(2)}</td>
-                  <td><button class="button is-warning" onclick="editarVeiculo(${
-                    veiculo.id
-                  })">Alterar</button></td>
-                  <td><button class="button is-danger" onclick="deleteItem(${
-                    veiculo.id
-                  })">Excluir</button></td>
-              `;
+      // Criar um objeto com os dados do novo veículo
+      const novoVeiculo = {
+        marca: marca,
+        modelo: modelo,
+        ano: parseInt(ano),
+        preco: parseFloat(preco),
+      };
 
-        // Adiciona a nova linha ao tbody
-        listarVeiculos.appendChild(itemVeiculos);
-      });
-    })
-    .catch((error) => {
-      console.error("Erro na requisição:", error);
-      alert("Falha ao se conectar com a API.");
+      try {
+        // Fazer a requisição POST para a API para adicionar o novo veículo
+        const response = await fetch("http://127.0.0.1:5000/veiculos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(novoVeiculo),
+        });
+
+        // Verificar se a requisição foi bem-sucedida
+        if (response.ok) {
+          alert("Veículo adicionado com sucesso!");
+          formVeiculo.reset(); // Limpa o formulário
+        } else {
+          alert("Erro ao adicionar o veículo.");
+          console.error("Erro na resposta:", await response.text());
+        }
+      } catch (error) {
+        console.error("Erro ao adicionar o veículo:", error);
+        alert("Erro ao se conectar com o servidor.");
+      }
     });
-}
+  } else {
+    console.error("Formulário de adição de veículo não encontrado.");
+  }
+
+  // Função para listar veículos na tabela
+  function listarVeiculos() {
+    fetch("http://127.0.0.1:5000/veiculos")
+      .then((response) => {
+        console.log("Resposta da API:", response); // Exibe a resposta completa no console
+        return response.json();
+      })
+      .then((veiculos) => {
+        // Seleciona o tbody da tabela onde os dados serão inseridos
+        const listarVeiculos = document.querySelector("#tabela-veiculos");
+        if (!listarVeiculos) return;
+        // Limpa o tbody antes de adicionar novos dados (opcional)
+        listarVeiculos.innerHTML = "";
+
+        veiculos.forEach((veiculo) => {
+          // Cria uma nova linha para cada veículo
+          const itemVeiculos = document.createElement("tr");
+
+          // Cria células para cada propriedade do veículo
+          itemVeiculos.innerHTML = `
+                    <td>${veiculo.id}</td>
+                    <td>${veiculo.marca}</td>
+                    <td>${veiculo.modelo}</td>
+                    <td>${veiculo.ano}</td>
+                    <td>R$ ${veiculo.preco.toFixed(2)}</td>
+                    <td><button class="button is-warning" onclick="editarVeiculo(${
+                      veiculo.id
+                    })">Alterar</button></td>
+                    <td><button class="button is-danger" onclick="deleteItem(${
+                      veiculo.id
+                    })">Excluir</button></td>
+                `;
+
+          // Adiciona a nova linha ao tbody
+          listarVeiculos.appendChild(itemVeiculos);
+        });
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+        alert("Falha ao se conectar com a API.");
+      });
+  }
+  // Chamada inicial para listar veículos na tabela
+  listarVeiculos();
+});
 
 // Função para deletar um veículo
 async function deleteItem(id) {
@@ -158,6 +207,3 @@ async function deleteItem(id) {
 function editarVeiculo(id) {
   window.location.href = `dados-veiculos.html?id=${id}`;
 }
-
-// Chamada inicial para listar veículos na tabela
-listarVeiculos();
